@@ -83,11 +83,44 @@ def zad_8(db):
 
 
 def zad_9(db):
-    pass
+    imdb_name = db['Name']
+    imdb_name.drop_indexes()
+    imdb_name.create_index([('primaryProfession', 'text')],
+                           background=True)
+    results = imdb_name.find(
+        {'$text': {'$search': 'director actor'}, 'birthYear': {'$gt': 1950}, 'birthYear': {'$lte': 1980}},
+        {'primaryName': 1, 'birthYear': 1, 'primaryProfession': 1, '_id': 0}). \
+        sort('birthYear', 1). \
+        limit(5)
+    count = imdb_name.find(
+        {'$text': {'$search': 'director actor'}, 'birthYear': {'$gt': 1950}, 'birthYear': {'$lte': 1980}},
+        {'primaryName': 1, 'birthYear': 1, 'primaryProfession': 1, '_id': 0}). \
+        count()
+    print("\nZadanie 9:")
+    for result in results:
+        print(result)
+    print('Liczba dokumentów ' + str(count))
 
 
 def zad_10(db):
-    pass
+    imdb_name = db['Name']
+    imdb_name.drop_indexes()
+    imdb_name.create_index([('primaryName', 'text')],
+                           background=True)
+    results = imdb_name.find({'$text': {'$search': 'Fonda Coppola', '$caseSensitive': True}},
+                             {'primaryName': 1, 'primaryProfession': 1, '_id': 0}) \
+        .sort('primaryName', 1) \
+        .limit(5)
+    count = imdb_name.find({'$text': {'$search': 'Fonda Coppola', '$caseSensitive': True}},
+                           {'primaryName': 1, 'primaryProfession': 1, '_id': 0}) \
+        .count()
+    indexes = imdb_name.index_information()
+    print("\nZadanie 10:")
+    for result in results:
+        print(result)
+    print('Liczba dokumentów ' + str(count))
+    print('Liczba indexów ' + str(indexes.__len__()))
+    print(str(indexes))
 
 
 if __name__ == '__main__':
