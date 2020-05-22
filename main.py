@@ -107,12 +107,12 @@ def zad_9(db):
     imdb_name.create_index([('primaryProfession', 'text')],
                            background=True)
     results = imdb_name.find(
-        {'$text': {'$search': 'director actor'}, 'birthYear': {'$gt': 1950}, 'birthYear': {'$lte': 1980}},
+        {'$text': {'$search': 'director actor'}, 'birthYear': {'$gt': 1950, '$lte': 1980}},
         {'primaryName': 1, 'birthYear': 1, 'primaryProfession': 1, '_id': 0}). \
         sort('birthYear', 1). \
         limit(5)
     count = imdb_name.find(
-        {'$text': {'$search': 'director actor'}, 'birthYear': {'$gt': 1950}, 'birthYear': {'$lte': 1980}},
+        {'$text': {'$search': 'director actor'}, 'birthYear': {'$gt': 1950, '$lte': 1980}},
         {'primaryName': 1, 'birthYear': 1, 'primaryProfession': 1, '_id': 0}). \
         count()
     print("\nZadanie 9:")
@@ -145,21 +145,21 @@ def zad_10(db):
 if __name__ == '__main__':
     mongo_client = pymongo.MongoClient('mongodb://localhost:27017')
     db_imdb = mongo_client['IMDB']
-    zad_2(db_imdb)
-    print('')
-    zad_3(db_imdb)
-    print('')
-    zad_4(db_imdb)
-    print('')
-    zad_5(db_imdb)
-    print('')
-    zad_6(db_imdb)
-    print('')
-    zad_7(db_imdb)
-    print('')
-    zad_8(db_imdb)
-    print('')
+    # zad_2(db_imdb)
+    # print('')
+    # zad_3(db_imdb)
+    # print('')
+    # zad_4(db_imdb)
+    # print('')
+    # zad_5(db_imdb)
+    # print('')
+    # zad_6(db_imdb)
+    # print('')
+    # zad_7(db_imdb)
+    # print('')
+    # zad_8(db_imdb)
+    # print('')
     zad_9(db_imdb)
     print('')
-    zad_10(db_imdb)
-    print('')
+    # zad_10(db_imdb)
+    # print('')
