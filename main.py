@@ -52,12 +52,12 @@ def zad_4(db):
 
 
 def zad_5(db):
-    imdb_crew = db['Crew']
-    results = imdb_crew.aggregate(
-        [{"$lookup": {"from": "Title", 'localField': 'tconst', 'foreignField': 'tconst', 'as': 'movie_title'}},
-         {'$match': {"movie_title.originalTitle": 'Casablanca', 'movie_title.startYear': 1942}},
-         {"$lookup": {"from": "Name", 'localField': 'directors', 'foreignField': 'nconst', 'as': 'person_info'}},
-         {'$project': {'person_info.primaryName': 1, '_id': 0, 'person_info.birthYear': 1}}
+    imdb_title = db['Title']
+    results = imdb_title.aggregate(
+        [{'$match': {"originalTitle": 'Casablanca', 'startYear': 1942}},
+         {"$lookup": {"from": "Crew", 'localField': 'tconst', 'foreignField': 'tconst', 'as': 'crew'}},
+         {"$lookup": {"from": "Name", 'localField': 'crew.directors', 'foreignField': 'nconst', 'as': 'director'}},
+         {'$project': {'director.primaryName': 1, '_id': 0, 'director.birthYear': 1}}
          ])
     print("\nZadanie 5:")
     for result in results:
@@ -75,7 +75,26 @@ def zad_6(db):
 
 
 def zad_7(db):
-    pass
+    imdb_title = db['Title']
+    without_count = imdb_title.aggregate([
+        {'$match': {'startYear': {'$gte': 1994, '$lte': 1996}, 'genres': {'$regex': ".*Documentary.*"}}},
+        {'$lookup': {'from': "Rating", 'localField': 'tconst', 'foreignField': 'tconst', 'as': 'rating'}},
+        {'$project': {'_id': 0, 'originalTitle': 1, 'startYear': 1, 'rating.averageRating': 1}},
+        {'$sort': {'rating.averageRating': -1}},
+        {'$limit': 10}
+    ])
+    with_count = imdb_title.aggregate([
+        {'$match': {'startYear': {'$gte': 1994, '$lte': 1996}, 'genres': {'$regex': ".*Documentary.*"}}},
+        {'$lookup': {'from': "Rating", 'localField': 'tconst', 'foreignField': 'tconst', 'as': 'rating'}},
+        {'$count': "all_entries"}
+    ])
+    print("Zadanie 7:")
+    print("Ilość:")
+    for result in with_count:
+        print(result)
+    print("Pierwsze 10 dokumentów:")
+    for result in without_count:
+        print(result)
 
 
 def zad_8(db):
@@ -126,16 +145,16 @@ def zad_10(db):
 if __name__ == '__main__':
     mongo_client = pymongo.MongoClient('mongodb://localhost:27017')
     db_imdb = mongo_client['IMDB']
-    # zad_2(db_imdb)
-    # print('')
-    # zad_3(db_imdb)
-    # print('')
-    # zad_4(db_imdb)
-    # print('')
+    zad_2(db_imdb)
+    print('')
+    zad_3(db_imdb)
+    print('')
+    zad_4(db_imdb)
+    print('')
     zad_5(db_imdb)
     print('')
-    # zad_6(db_imdb)
-    # print('')
+    zad_6(db_imdb)
+    print('')
     zad_7(db_imdb)
     print('')
     zad_8(db_imdb)
