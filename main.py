@@ -113,12 +113,12 @@ def zad_9(db):
     imdb_name.create_index([('primaryProfession', 'text')],
                            background=True)
     results = imdb_name.find(
-        {'$text': {'$search': 'director actor'}, 'birthYear': {'$gt': 1950}, 'birthYear': {'$lte': 1980}},
+        {'$text': {'$search': 'director actor'}, 'birthYear': {'$gt': 1950, '$lte': 1980}},
         {'primaryName': 1, 'birthYear': 1, 'primaryProfession': 1, '_id': 0}). \
         sort('birthYear', 1). \
         limit(5)
     count = imdb_name.find(
-        {'$text': {'$search': 'director actor'}, 'birthYear': {'$gt': 1950}, 'birthYear': {'$lte': 1980}},
+        {'$text': {'$search': 'director actor'}, 'birthYear': {'$gt': 1950, '$lte': 1980}},
         {'primaryName': 1, 'birthYear': 1, 'primaryProfession': 1, '_id': 0}). \
         count()
     print("\nZadanie 9:")
@@ -163,9 +163,9 @@ if __name__ == '__main__':
     # print('')
     # zad_7(db_imdb)
     # print('')
-    zad_8(db_imdb)
-    print('')
-    # zad_9(db_imdb)
+    # zad_8(db_imdb)
     # print('')
+    zad_9(db_imdb)
+    print('')
     # zad_10(db_imdb)
     # print('')
