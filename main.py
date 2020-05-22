@@ -98,7 +98,13 @@ def zad_7(db):
 
 
 def zad_8(db):
-    pass
+    imdb_title = db['Title']
+    result = imdb_title.aggregate([
+        {'$lookup': {'from': "Rating",'localField': "tconst",'foreignField': "tconst",'as': "title_rating"}},
+    {'$match': {"title_rating.averageRating": 10.0}},
+    {'$set':{'max': 1}}])
+    print('Zadanie 8')
+    print(result)
 
 
 def zad_9(db):
@@ -145,21 +151,21 @@ def zad_10(db):
 if __name__ == '__main__':
     mongo_client = pymongo.MongoClient('mongodb://localhost:27017')
     db_imdb = mongo_client['IMDB']
-    zad_2(db_imdb)
-    print('')
-    zad_3(db_imdb)
-    print('')
-    zad_4(db_imdb)
-    print('')
-    zad_5(db_imdb)
-    print('')
-    zad_6(db_imdb)
-    print('')
-    zad_7(db_imdb)
-    print('')
+    # zad_2(db_imdb)
+    # print('')
+    # zad_3(db_imdb)
+    # print('')
+    # zad_4(db_imdb)
+    # print('')
+    # zad_5(db_imdb)
+    # print('')
+    # zad_6(db_imdb)
+    # print('')
+    # zad_7(db_imdb)
+    # print('')
     zad_8(db_imdb)
     print('')
-    zad_9(db_imdb)
-    print('')
-    zad_10(db_imdb)
-    print('')
+    # zad_9(db_imdb)
+    # print('')
+    # zad_10(db_imdb)
+    # print('')
