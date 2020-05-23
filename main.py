@@ -98,13 +98,14 @@ def zad_7(db):
 
 
 def zad_8(db):
-    imdb_title = db['Title']
-    result = imdb_title.aggregate([
-        {'$lookup': {'from': "Rating",'localField': "tconst",'foreignField': "tconst",'as': "title_rating"}},
-    {'$match': {"title_rating.averageRating": 10.0}},
-    {'$set':{'max': 1}}])
-    print('Zadanie 8')
-    print(result)
+    imdb_rating = db['Rating']
+    result = imdb_rating.aggregate([
+        {'$match': {"averageRating": 10.0}},
+        {'$lookup': {'from': "Title", 'localField': "tconst", 'foreignField': "tconst", 'as': "title"}},
+        {'$set': {'max': 1}}])
+    print('Zadanie 8:')
+    for r in result:
+        print(r)
 
 
 def zad_9(db):
@@ -163,9 +164,9 @@ if __name__ == '__main__':
     # print('')
     # zad_7(db_imdb)
     # print('')
-    # zad_8(db_imdb)
-    # print('')
-    zad_9(db_imdb)
+    zad_8(db_imdb)
     print('')
+    # zad_9(db_imdb)
+    # print('')
     # zad_10(db_imdb)
     # print('')
